@@ -1,4 +1,4 @@
-import {IElement} from '../models'
+import {IElement} from '../models/IElement'
 
 export const elements: IElement[] = [
     {

@@ -20,3 +20,5 @@ export interface IElement {
   liked: boolean,
   alt: string
 }
+
+

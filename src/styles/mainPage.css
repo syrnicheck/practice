@@ -1,0 +1,16 @@
+.container{
+    margin: 0 auto;
+    max-width: 1240px;
+    width: 100%;
+}
+
+.photo-list{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    margin-top: 103px;
+    margin-bottom: 30px;
+    grid-column-gap: 30px;
+    grid-row-gap: 30px;
+    
+}
+
