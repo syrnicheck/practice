@@ -5,6 +5,6 @@ export interface IPageResponseData {
     page: number,
     per_page: number,
     photos: IElement[],
-    prev_page?: string,
-    next_page?: string
+    prev_page: string,
+    next_page: string
 }

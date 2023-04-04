@@ -3,28 +3,29 @@ import axios, { AxiosError } from 'axios';
 import { elements } from '../data/elements';
 import { IElement } from '../models/IElement';
 import { IPageResponseData } from '../models/IPageResposeData';
+import { DEFAULT_PAGE_SIZE, DEFAULT_PAGE_NUMBER } from '../constants/app';
+
 
 export function useElements() {
-  const [query, setQuery] = useState("house");
-  const [perPage, setPerPage] = useState(1);
   const [elements, setElements] = useState<IElement[]>([]);
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
 
-  const url = `https://api.pexels.com/v1/curated?page=${perPage}}`;
-  const access_token = '563492ad6f917000010000014640aabb4e9d420cbe1c0df7daf4c2bf';
-
-  async function fetchElements() {
+  async function fetchElements(pageNumber?: number, pageSize?: number) {
     try {
+      const page = pageNumber || DEFAULT_PAGE_NUMBER;
+      const perPage = pageSize || DEFAULT_PAGE_SIZE;
+
+      const url = `https://api.pexels.com/v1/curated?page=${page}&per_page=${perPage}}`;
+
       setError('')
       setLoading(true);
       const response = await axios.get<IPageResponseData>(url, {
         headers: {
-          'Authorization': `${access_token}`
+          'Authorization': `${process.env.API_KEY}`
         }
       });
       console.log(response);
-
       setElements(response.data.photos);
       setLoading(false)
     } catch (e: unknown) {
@@ -34,9 +35,5 @@ export function useElements() {
     }
   }
 
-  useEffect(() => {
-    fetchElements()
-  }, [])
-
-  return { elements, error, loading }
+  return { elements, error, loading, fetchElements }
 }
