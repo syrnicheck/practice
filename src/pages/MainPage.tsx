@@ -3,6 +3,9 @@ import { Element } from '../components/Element';
 import { useElements } from '../hooks/useElements';
 import { IElement } from '../models/IElement';
 import '../styles/mainPage.css';
+import throttle from '../utils/throttle'
+import { THROTTLING_SCROLL_TIME_MS } from '../constants/app';
+
 
 export function MainPage() {
     const { elements, error, loading, fetchElements } = useElements();
@@ -26,20 +29,14 @@ export function MainPage() {
         setPageElements([...pageElements, ...elements])
     }, [elements])
 
-    const loadMore = () => {
-        setCurrentPage(currentPage + 1);
-    };
-
     useEffect(() => {
         if (isVisible) {
             setCurrentPage(currentPage + 1);
         }
     }, [isVisible])
 
-
-
     useEffect(() => {
-        const handleScroll = () => {
+        const onScroll = () => {
             const element = document.getElementById('infinity-scroll');
             if (!element) {
                 console.log('return');
@@ -48,23 +45,17 @@ export function MainPage() {
             const rect = element.getBoundingClientRect();
             console.log(rect);
             console.log(window.pageYOffset);
-            // const top = rect.top + window.pageYOffset;
-            //const visible = top < window.innerHeight && bottom >= 0;
-            const bottom = rect.bottom + window.pageYOffset;
-            const visible = bottom - window.pageYOffset - window.innerHeight < 100;
-            //console.log(top, window.innerHeight);
-            console.log(bottom);
+            const visible = rect.bottom - window.innerHeight < 100;
             console.log(visible);
 
             setIsVisible(visible);
 
         }
-
+        const handleScroll = throttle(onScroll, THROTTLING_SCROLL_TIME_MS)
         window.addEventListener('scroll', handleScroll);
         return () => window.removeEventListener('scroll', handleScroll);
+        
     }, []);
-
-
 
     return (
         <div className="container">
