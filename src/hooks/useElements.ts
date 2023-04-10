@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import  {  useState } from 'react';
 import axios, { AxiosError } from 'axios';
-import { elements } from '../data/elements';
 import { IElement } from '../models/IElement';
 import { IPageResponseData } from '../models/IPageResposeData';
-import { DEFAULT_PAGE_SIZE, DEFAULT_PAGE_NUMBER } from '../constants/app';
+import { DEFAULT_PAGE_SIZE, DEFAULT_PAGE_NUMBER, API_KEY } from '../constants/app';
 
 
 export function useElements() {
@@ -22,7 +21,7 @@ export function useElements() {
       setLoading(true);
       const response = await axios.get<IPageResponseData>(url, {
         headers: {
-          'Authorization': `${process.env.API_KEY}`
+          'Authorization': API_KEY
         }
       });
       console.log(response);

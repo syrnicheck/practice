@@ -3,7 +3,7 @@ import axios, { AxiosError } from 'axios';
 import { elements } from '../data/elements';
 import { IElement } from '../models/IElement';
 import { IPageResponseData } from '../models/IPageResposeData';
-import { DEFAULT_PAGE_SIZE, DEFAULT_PAGE_NUMBER } from '../constants/app';
+import { DEFAULT_PAGE_SIZE, DEFAULT_PAGE_NUMBER, API_KEY } from '../constants/app';
 
 
 export function useCategoryElements() {
@@ -11,19 +11,19 @@ export function useCategoryElements() {
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState('')
 
-    async function fetchCategoryElements(pageNumber?: number, pageSize?: number, category?: string) {
+    async function fetchCategoryElements(category?: string, pageNumber?: number, pageSize?: number) {
         try {
             const query = category || "house"
             const page = pageNumber || DEFAULT_PAGE_NUMBER;
             const perPage = pageSize || DEFAULT_PAGE_SIZE;
 
-            const url = `https://api.pexels.com/v1/search?query=${query}`;
+            const url = `https://api.pexels.com/v1/search?query=${query}&page=${page}`;
 
             setError('')
             setLoading(true);
             const response = await axios.get<IPageResponseData>(url, {
                 headers: {
-                    'Authorization': `${process.env.API_KEY}`
+                    'Authorization':  API_KEY
                 }
             });
             console.log(response);

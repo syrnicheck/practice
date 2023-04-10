@@ -2,20 +2,37 @@ import React, { useState, useEffect } from "react";
 import { useCategoryElements } from "../hooks/useCategoryElements";
 import { Element } from '../components/Element';
 import '../styles/mainPage.css';
+import { useSelector } from "react-redux";
+
+
+interface AppState {
+    category: {
+        selectedCategory: string;
+    }; // Replace with the actual type of 'category'
+    // Add other properties for other parts of your state
+  }
 
 export function CategoryPage() {
     const { elements, error, loading, fetchCategoryElements } = useCategoryElements();
     const [currentPage, setCurrentPage] = useState(1);
     const [pageElements, setPageElements] = useState(elements);
     const [isVisible, setIsVisible] = useState(false);
+    const category = useSelector((state:  AppState)  => state.category)
+    console.log(category)
+
 
     const columnFirst = pageElements.filter((e, i) => i % 3 === 0);
     const columnSecond = pageElements.filter((e, i) => i % 3 === 1);
     const columnThird = pageElements.filter((e, i) => i % 3 === 2);
 
     useEffect(() => {
-        fetchCategoryElements(currentPage)
-    }, [currentPage])
+        fetchCategoryElements(category.selectedCategory, currentPage)
+    }, [ currentPage])
+
+    useEffect(() => {
+        setPageElements([])
+        fetchCategoryElements(category.selectedCategory, currentPage)
+    },[category.selectedCategory])
 
     useEffect(() => {
         console.log(elements);

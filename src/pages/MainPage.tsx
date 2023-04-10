@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Element } from '../components/Element';
 import { useElements } from '../hooks/useElements';
-import { IElement } from '../models/IElement';
 import '../styles/mainPage.css';
 import throttle from '../utils/throttle'
 import { THROTTLING_SCROLL_TIME_MS } from '../constants/app';
@@ -71,11 +70,7 @@ export function MainPage() {
                 <div className="column">
                     {columnThird.map(element => <Element element={element} key={element.id} />)}
                 </div>
-
-                {/* {elements.map(element => <Element element={element} key={element.id}/>)} */}
-                {/* <Element element = {elements[0]} /> */}
             </div>
-            {/* <button id="infinity-scroll" onClick={loadMore}>LOAD MORE</button> */}
         </div>
     );
 }
