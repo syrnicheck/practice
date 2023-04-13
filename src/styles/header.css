@@ -1,43 +1,84 @@
-.container{
+.container {
     margin: 0 auto;
     max-width: 1240px;
     width: 100%;
-    font-family: PlusJakartaSans,-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen,Cantarell,Helvetica Neue,Ubuntu,sans-serif;
+    font-family: PlusJakartaSans, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Cantarell, Helvetica Neue, Ubuntu, sans-serif;
     font-size: 14px;
     line-height: 1.4;
-    
+
 }
 
-.header{
+.navigation {
     position: fixed;
+    transition: all ease 0.5s;
     top: 0;
     right: 0;
     left: 0;
     height: 80px;
     padding: 0 92.5px;
 
-    z-index: 1000;
+    z-index: 10;
     border-bottom-width: 1px;
-    border-bottom-style: solid; 
-    border-bottom-color: #f7f7f7; 
+    border-bottom-style: solid;
+    border-bottom-color: #f7f7f7;
     background: #fff;
+}
+
+.navigation-hiden {
+    transform: translateY(-85px);
+
+}
+
+.main-navigation {
+    height: 500px;
+    position: relative;
+
+    /* opacity: 0.7; */
+    /* background: no-repeat url("../../media/examples/lizard.png"); */
+    background-size: cover;
+    justify-content: center;
+    align-items: center;
+}
+
+.main-navigation::before{
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: black;
+    opacity: 0.4;
+
+
+
+}
+
+.main-page-header {
+    height: 80px;    
+}
+
+.header {
+    height: 80px;
 }
 
 .header-inner {
     display: flex;
-	justify-content: space-between;
-	align-items: center;
+    justify-content: space-between;
+    align-items: center;
     height: 100%;
+    z-index: 2;
+  
 }
 
-.search{
+.search {
     display: flex;
     align-items: center;
     width: 630px;
     height: 50px;
 }
 
-.search-input{
+.search-input {
     width: calc(100% - 55px);
     height: 100%;
     padding: 15px 4px 15px 20px;
@@ -51,26 +92,30 @@
     line-height: 1.15;
 }
 
-.searchInput-button{
+.searchInput-button {
     width: 55px;
     border: 1px solid #f7f7f7;
-    border-radius:  0 8px 8px 0;
+    border-radius: 0 8px 8px 0;
     background: #f7f7f7;
     height: 100%;
     cursor: pointer;
 }
 
-.loupe{
+.loupe {
     z-index: 100;
 }
 
-.header-nav{
+.header-nav {
     display: flex;
     align-items: center;
     justify-content: space-between;
 }
 
-.link{
+.logo{
+    z-index: 4;
+}
+
+.link {
     margin-right: 20px;
     text-decoration: none;
     color: #4a4a4a;
@@ -79,7 +124,12 @@
     font-weight: 600;
 }
 
-.button{
+.link-main-page {
+    color: #fff;
+    z-index: 4;
+}
+
+.button {
     color: #fff;
     border-color: #07a081;
     background: #07a081;
@@ -88,9 +138,77 @@
     font-size: 16px;
     font-weight: 600;
     padding: 10px 20px;
-    transition: background-color .1s,border ease-in-out,transform .1s,box-shadow 5ms,border-color .25s;
+    transition: background-color .1s, border ease-in-out, transform .1s, box-shadow 5ms, border-color .25s;
+    z-index: 4;
+    cursor: pointer;
 }
 
 .button:hover {
     background: #059377;
+}
+
+.main-page-information-container {
+    position: absolute;
+    width: 100%;
+    max-width: 630px;
+
+    top: 55%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+
+
+.main-page-information {
+    width: 100%;
+}
+
+
+.main-page-text {
+    margin-bottom: 30px;
+    font-weight: 600;
+    font-size: 33px;
+    line-height: 40px;
+    letter-spacing: -.02em;
+    color: #fff;
+}
+
+.main-input {
+    margin-bottom: 30px;
+}
+
+.category-list {
+    margin-top: 30px;
+    display: inline;
+    color: hsla(0,0%,100%,.7);
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 26px;
+}
+
+.category-item {
+    display: inline;
+    color: #fff;
+    cursor: pointer;
+    font-family: PlusJakartaSans, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Cantarell, Helvetica Neue, Ubuntu, sans-serif;
+}
+
+.category-list .category-item:not(:last-child)::after {
+    content: ", ";
+}
+
+.main-page-photographer {
+    position: absolute;
+    right: 20px;
+    bottom: 20px;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 22px;
+    opacity: .7;
+    
+}
+
+a {
+    color: #fff;
+    text-decoration: none;
 }

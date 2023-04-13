@@ -3,21 +3,16 @@ import { useCategoryElements } from "../hooks/useCategoryElements";
 import { Element } from '../components/Element';
 import '../styles/mainPage.css';
 import { useSelector } from "react-redux";
+import { Navigation } from '../components/Navigation';
+import { AppState } from "../models/model";
 
-
-interface AppState {
-    category: {
-        selectedCategory: string;
-    }; // Replace with the actual type of 'category'
-    // Add other properties for other parts of your state
-  }
 
 export function CategoryPage() {
-    const { elements, error, loading, fetchCategoryElements } = useCategoryElements();
+    const {totalResults, elements, error, loading, fetchCategoryElements } = useCategoryElements();
     const [currentPage, setCurrentPage] = useState(1);
     const [pageElements, setPageElements] = useState(elements);
     const [isVisible, setIsVisible] = useState(false);
-    const category = useSelector((state:  AppState)  => state.category)
+    const category = useSelector((state: AppState) => state.category)
     console.log(category)
 
 
@@ -27,12 +22,12 @@ export function CategoryPage() {
 
     useEffect(() => {
         fetchCategoryElements(category.selectedCategory, currentPage)
-    }, [ currentPage])
+    }, [currentPage])
 
     useEffect(() => {
         setPageElements([])
         fetchCategoryElements(category.selectedCategory, currentPage)
-    },[category.selectedCategory])
+    }, [category.selectedCategory])
 
     useEffect(() => {
         console.log(elements);
@@ -56,17 +51,8 @@ export function CategoryPage() {
                 return;
             }
             const rect = element.getBoundingClientRect();
-            console.log(rect);
-            console.log(window.pageYOffset);
-            // const top = rect.top + window.pageYOffset;
-            //const visible = top < window.innerHeight && bottom >= 0;
-            //const bottom = rect.bottom + window.pageYOffset;
             const visible = rect.bottom - window.innerHeight < 100;
-            //console.log(top, window.innerHeight);
-            console.log(visible);
-
             setIsVisible(visible);
-
         }
 
         window.addEventListener('scroll', handleScroll);
@@ -75,26 +61,47 @@ export function CategoryPage() {
 
 
     return (
-        <div>
-            <div className="container">
-                {loading && <p>Loading...</p>}
-                {error && <p>{error}</p>}
-                <div className="photo-list" id="infinity-scroll">
-                    <div className="column">
-                        {columnFirst.map(element => <Element element={element} key={element.id} />)}
+        <>
+            <Navigation/>
+            <div>
+                <div className="container">
+                    {loading && <p>Loading...</p>}
+                    {error && <p>{error}</p>}
+                    <div className="category-page-title">{category.selectedCategory} Photos</div>
+                    <div className="category-result">
+                        <div className="search-results">Photos <span className="number">{totalResults} </span> </div>
+                        <div className="filters">
+                            <select className="filter">
+                                <option value="1">All Orientations</option>
+                                <option value="2">Horizontal</option>
+                                <option value="3">Vertical</option>
+                                <option value="4">Square</option>
+                            </select>
+                            <select className="filter">
+                                <option value="1">All Sizes</option>
+                                <option value="2">Large</option>
+                                <option value="3">Medium</option>
+                                <option value="4">Small</option>
+                            </select>
+                        </div>
                     </div>
-                    <div className="column">
-                        {columnSecond.map(element => <Element element={element} key={element.id} />)}
-                    </div>
-                    <div className="column">
-                        {columnThird.map(element => <Element element={element} key={element.id} />)}
-                    </div>
+                    <div className="photo-list" id="infinity-scroll">
+                        <div className="column">
+                            {columnFirst.map(element => <Element element={element} key={element.id} />)}
+                        </div>
+                        <div className="column">
+                            {columnSecond.map(element => <Element element={element} key={element.id} />)}
+                        </div>
+                        <div className="column">
+                            {columnThird.map(element => <Element element={element} key={element.id} />)}
+                        </div>
 
-                    {/* {elements.map(element => <Element element={element} key={element.id}/>)} */}
-                    {/* <Element element = {elements[0]} /> */}
+                        {/* {elements.map(element => <Element element={element} key={element.id}/>)} */}
+                        {/* <Element element = {elements[0]} /> */}
+                    </div>
+                    {/* <button id="infinity-scroll" onClick={loadMore}>LOAD MORE</button> */}
                 </div>
-                {/* <button id="infinity-scroll" onClick={loadMore}>LOAD MORE</button> */}
             </div>
-        </div>
+        </>
     )
 }

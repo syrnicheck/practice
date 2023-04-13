@@ -8,6 +8,7 @@ import { DEFAULT_PAGE_SIZE, DEFAULT_PAGE_NUMBER, API_KEY } from '../constants/ap
 
 export function useCategoryElements() {
     const [elements, setElements] = useState<IElement[]>([]);
+    const [totalResults, setTotalResults] = useState<number>( )
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState('')
 
@@ -17,7 +18,7 @@ export function useCategoryElements() {
             const page = pageNumber || DEFAULT_PAGE_NUMBER;
             const perPage = pageSize || DEFAULT_PAGE_SIZE;
 
-            const url = `https://api.pexels.com/v1/search?query=${query}&page=${page}`;
+            const url = `https://api.pexels.com/v1/search?query=${query}&page=${page}&per_page=${perPage}`;
 
             setError('')
             setLoading(true);
@@ -28,6 +29,7 @@ export function useCategoryElements() {
             });
             console.log(response);
             setElements(response.data.photos);
+            setTotalResults(response.data.total_results)
             setLoading(false)
         } catch (e: unknown) {
             const error = e as AxiosError;
@@ -37,5 +39,5 @@ export function useCategoryElements() {
         }
     }
 
-    return { elements, error, loading, fetchCategoryElements }
+    return {totalResults,  elements, error, loading, fetchCategoryElements }
 }

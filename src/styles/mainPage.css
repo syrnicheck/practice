@@ -4,6 +4,15 @@
     width: 100%;
 }
 
+.main-page-title {
+    font-weight: 600;
+    font-size: 23px;
+    line-height: 36px;
+    letter-spacing: -.015em;
+    color: #2c343e;
+    margin-top: 95px;
+}
+
 .photo-list {
     /* display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -13,7 +22,7 @@
     display: flex;
     flex-direction: row;
 
-    margin-top: 103px;
+    margin-top: 30px;
     margin-bottom: 30px;
 
 }
@@ -27,4 +36,56 @@
 
 .photo-list :last-child {
     margin-right: 0;
+}
+
+/* category page styles */
+.category-page-title {
+    margin-top: 130px;
+    margin-bottom: 30px;
+    font-weight: 600;
+    font-size: 49px;
+    line-height: 65px;
+    letter-spacing: -.02em;
+    color: #2c343e;
+}
+
+.category-page-title::first-letter {
+    text-transform: uppercase;
+}
+
+.category-result {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.search-results {
+    padding: 0 20px;
+    color: #fff;
+    border: 1px solid transparent;
+    background: #000;
+    font-size: 16px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    height: 48px;
+    border-radius: 25px;
+}
+
+.filter {
+    margin-left: 30px;
+    height: 48px;
+    border: 1px solid #dfdfe0;
+    border-radius: 5px;
+    text-align: left;
+    font-size: 16px;
+    font-weight: 600;
+    color: #4a4a4a;
+    cursor: pointer;
+    padding: 1px 20px;
+}
+
+.number {
+    color: #7f7f7f;
+    margin: 0 0 0 8px;
 }

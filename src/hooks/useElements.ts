@@ -15,7 +15,7 @@ export function useElements() {
       const page = pageNumber || DEFAULT_PAGE_NUMBER;
       const perPage = pageSize || DEFAULT_PAGE_SIZE;
 
-      const url = `https://api.pexels.com/v1/curated?page=${page}&per_page=${perPage}}`;
+      const url = `https://api.pexels.com/v1/curated?page=${page}&per_page=${perPage}`;
 
       setError('')
       setLoading(true);

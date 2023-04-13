@@ -3,13 +3,16 @@ import { useNavigate } from 'react-router-dom';
 import '../styles/header.css';
 import { ChangeEvent } from 'react';
 import { setCategoryAction } from "../store/reducers/categoryReducer";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { SEARCH_PAGE_URL } from "../constants/app";
+import { AppState } from "../models/model";
 
 const ENTER_BUTTON_KEYCODE = 13;
 
 export function Input() {
-    const [searchedCategory, setSearchedCategory] = useState("");
+    const category = useSelector((state: AppState) => state.category)
+    const [searchedCategory, setSearchedCategory] = useState(category.selectedCategory);
+    
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
