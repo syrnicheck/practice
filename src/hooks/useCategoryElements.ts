@@ -12,13 +12,14 @@ export function useCategoryElements() {
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState('')
 
-    async function fetchCategoryElements(category?: string, pageNumber?: number, pageSize?: number) {
+    async function fetchCategoryElements(pageNumber?: number,category?: string,  orientation?: string,
+         size?: string, pageSize?: number ) {
         try {
             const query = category || "house"
             const page = pageNumber || DEFAULT_PAGE_NUMBER;
             const perPage = pageSize || DEFAULT_PAGE_SIZE;
 
-            const url = `https://api.pexels.com/v1/search?query=${query}&page=${page}&per_page=${perPage}`;
+            const url = `https://api.pexels.com/v1/search?query=${query}&page=${page}&per_page=${perPage}&orientation=${orientation}&size=${size}`;
 
             setError('')
             setLoading(true);

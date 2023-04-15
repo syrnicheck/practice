@@ -1,105 +1,95 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, ChangeEvent } from "react";
 import { useCategoryElements } from "../hooks/useCategoryElements";
 import { Element } from '../components/Element';
 import '../styles/mainPage.css';
 import { useSelector } from "react-redux";
 import { Navigation } from '../components/Navigation';
 import { AppState } from "../models/model";
+import { PhotoList } from "../components/PhotoList";
 
 
 export function CategoryPage() {
-    const {totalResults, elements, error, loading, fetchCategoryElements } = useCategoryElements();
-    const [currentPage, setCurrentPage] = useState(1);
+    const { totalResults, elements, error, loading, fetchCategoryElements } = useCategoryElements();
+    const [nextPage, setNextPage] = useState(1);
     const [pageElements, setPageElements] = useState(elements);
-    const [isVisible, setIsVisible] = useState(false);
-    const category = useSelector((state: AppState) => state.category)
-    console.log(category)
+    const [hasMore, setHasMore] = useState(true);
+    const [orientation, setOrientation] = useState("");
+    const [size, setSize] = useState("");
+    const category = useSelector((state: AppState) => state.category);
 
-
-    const columnFirst = pageElements.filter((e, i) => i % 3 === 0);
-    const columnSecond = pageElements.filter((e, i) => i % 3 === 1);
-    const columnThird = pageElements.filter((e, i) => i % 3 === 2);
-
-    useEffect(() => {
-        fetchCategoryElements(category.selectedCategory, currentPage)
-    }, [currentPage])
 
     useEffect(() => {
         setPageElements([])
-        fetchCategoryElements(category.selectedCategory, currentPage)
+        fetchCategoryElements(nextPage, category.selectedCategory, orientation, size)
     }, [category.selectedCategory])
 
     useEffect(() => {
-        console.log(elements);
-        console.log(pageElements);
-
-        setPageElements([...pageElements, ...elements])
+        setNextPage(nextPage + 1);
+        setPageElements([...pageElements, ...elements]);
+        setHasMore(elements.length > 0);
     }, [elements])
 
-    useEffect(() => {
-        if (isVisible) {
-            setCurrentPage(currentPage + 1);
+    const handleLoadMore = () => {
+        fetchCategoryElements( nextPage);
+        console.log(nextPage)
+      };
+
+    const formatNumber = (num: number): string => {
+        if (num >= 1000) {
+            const abbreviatedNumber = num / 1000;
+            return `${abbreviatedNumber}k`;
+        } else {
+            return num.toString();
         }
-    }, [isVisible])
+    }
 
+    const optionOrientationHandler = (event: ChangeEvent<HTMLSelectElement>) => {
+        setOrientation(event.target.value);
+        fetchCategoryElements(nextPage, category.selectedCategory, event.target.value, size);
+        setPageElements([]);
+        console.log(event.target.value);
+    };
 
-    useEffect(() => {
-        const handleScroll = () => {
-            const element = document.getElementById('infinity-scroll');
-            if (!element) {
-                console.log('return');
-                return;
-            }
-            const rect = element.getBoundingClientRect();
-            const visible = rect.bottom - window.innerHeight < 100;
-            setIsVisible(visible);
-        }
+    const optionSizeHandler = (event: ChangeEvent<HTMLSelectElement>) => {
+        setSize(event.target.value);
+        fetchCategoryElements(nextPage, category.selectedCategory,  orientation, event.target.value);
+        setPageElements([]);
+        console.log(fetchCategoryElements)
+        console.log(event.target.value);
+    };
 
-        window.addEventListener('scroll', handleScroll);
-        return () => window.removeEventListener('scroll', handleScroll);
-    }, []);
 
 
     return (
         <>
-            <Navigation/>
+            <Navigation />
             <div>
                 <div className="container">
                     {loading && <p>Loading...</p>}
                     {error && <p>{error}</p>}
                     <div className="category-page-title">{category.selectedCategory} Photos</div>
                     <div className="category-result">
-                        <div className="search-results">Photos <span className="number">{totalResults} </span> </div>
+                        <div className="search-results">Photos <span className="number">{formatNumber(Number(totalResults))} </span> </div>
                         <div className="filters">
-                            <select className="filter">
-                                <option value="1">All Orientations</option>
-                                <option value="2">Horizontal</option>
-                                <option value="3">Vertical</option>
-                                <option value="4">Square</option>
+                            <select className="filter" value={orientation} onChange={optionOrientationHandler}>
+                                <option value="" selected>All Orientations</option>
+                                <option value="landscape">Horizontal</option>
+                                <option value="portrait">Vertical</option>
+                                <option value="square">Square</option>
                             </select>
-                            <select className="filter">
-                                <option value="1">All Sizes</option>
-                                <option value="2">Large</option>
-                                <option value="3">Medium</option>
-                                <option value="4">Small</option>
+                            <select className="filter" value={size} onChange={optionSizeHandler}>
+                                <option value="">All Sizes</option>
+                                <option value="large">Large</option>
+                                <option value="medium">Medium</option>
+                                <option value="small">Small</option>
                             </select>
                         </div>
                     </div>
-                    <div className="photo-list" id="infinity-scroll">
-                        <div className="column">
-                            {columnFirst.map(element => <Element element={element} key={element.id} />)}
-                        </div>
-                        <div className="column">
-                            {columnSecond.map(element => <Element element={element} key={element.id} />)}
-                        </div>
-                        <div className="column">
-                            {columnThird.map(element => <Element element={element} key={element.id} />)}
-                        </div>
-
-                        {/* {elements.map(element => <Element element={element} key={element.id}/>)} */}
-                        {/* <Element element = {elements[0]} /> */}
-                    </div>
-                    {/* <button id="infinity-scroll" onClick={loadMore}>LOAD MORE</button> */}
+                    <PhotoList
+                        pageElements={pageElements}
+                        handleLoadMore={handleLoadMore}
+                        hasMore={hasMore}
+                    />
                 </div>
             </div>
         </>
