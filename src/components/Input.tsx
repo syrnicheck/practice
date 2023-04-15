@@ -12,7 +12,7 @@ const ENTER_BUTTON_KEYCODE = 13;
 export function Input() {
     const category = useSelector((state: AppState) => state.category)
     const [searchedCategory, setSearchedCategory] = useState(category.selectedCategory);
-    
+
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
@@ -23,13 +23,16 @@ export function Input() {
 
     const pressEnterHandler = (event: any) => {
         if (event.keyCode === ENTER_BUTTON_KEYCODE) {
+
             search()
         }
     }
 
     const search = () => {
-        dispatch(setCategoryAction(searchedCategory))
-        navigate(SEARCH_PAGE_URL)
+        if (searchedCategory != category.selectedCategory) {
+            dispatch(setCategoryAction(searchedCategory))
+            navigate(SEARCH_PAGE_URL)
+        }
     };
 
     return (

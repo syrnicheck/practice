@@ -12,38 +12,38 @@ import { setCategoryAction } from "../store/reducers/categoryReducer";
 export function MainNavigation() {
     const { element, error, loading, fetchElementById } = useElementById();
     const [isMainNavVisible, setIsMainNavVisible] = useState(true);
+    const [randomCategories, setRandomCategories] = useState<string[]>([])
+
     const dispatch = useDispatch();
     const navigate = useNavigate();
+
+    console.log('rerender')
 
     useEffect(() => {
         const randomId = MAIN_PAGE_BACKGROUND_IDS[Math.floor(Math.random() * MAIN_PAGE_BACKGROUND_IDS.length)]
         fetchElementById(randomId)
+        
+        const categories: string[] = [];
+        while (categories.length < 7) {
+            const randomIndex = getRandomNumber(0,  SUGGESTED_CATEGORIES.length - 1);
+            
+            if (!categories.includes( SUGGESTED_CATEGORIES[randomIndex])) {
+                categories.push( SUGGESTED_CATEGORIES[randomIndex]);
+            }
+        }
+        setRandomCategories(categories)
     }, [])
 
     function getRandomNumber(min: number, max: number) {
         return Math.floor(Math.random() * (max - min + 1)) + min;
     }
 
-    const randomCategries: string[] = []
-
-    while (randomCategries.length < 7) {
-        const randomIndex = getRandomNumber(0,  SUGGESTED_CATEGORIES.length - 1);
-        
-        if (!randomCategries.includes( SUGGESTED_CATEGORIES[randomIndex])) {
-            randomCategries.push( SUGGESTED_CATEGORIES[randomIndex]);
-        }
-    }
-
+    
     const search = (item: string) => {
         dispatch(setCategoryAction(item))
         navigate(SEARCH_PAGE_URL)
     };
 
-    const arrElements = randomCategries.map((item, index) => (
-        <li className="category-item" key={index} onClick={() => search(item)}>
-            <a>{item}</a>
-        </li>
-    ));
 
 
     useEffect(() => {
@@ -88,7 +88,13 @@ export function MainNavigation() {
                         <div className="main-page-information">
                             <h1 className="main-page-text">The best free stock photos & videos shared by talented creators</h1>
                             <div className="main-input"><Input /></div>
-                            <ul className="category-list">Suggested: {arrElements}</ul>
+                            <ul className="category-list">Suggested: {
+                                randomCategories.map((item, index) => (
+                                    <li className="category-item" key={index} onClick={() => search(item)}>
+                                        <a>{item}</a>
+                                    </li>
+                                ))
+                            }</ul>
                         </div>
                     </div>
                     <div className="main-page-photographer">
