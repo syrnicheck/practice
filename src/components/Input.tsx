@@ -4,7 +4,7 @@ import '../styles/header.css';
 import { ChangeEvent } from 'react';
 import { setCategoryAction } from "../store/reducers/categoryReducer";
 import { useDispatch, useSelector } from "react-redux";
-import { SEARCH_PAGE_URL } from "../constants/app";
+import { SEARCH_PAGE_URL, HOME_PAGE_URL } from "../constants/app";
 import { AppState } from "../models/model";
 
 const ENTER_BUTTON_KEYCODE = 13;
@@ -23,16 +23,19 @@ export function Input() {
 
     const pressEnterHandler = (event: any) => {
         if (event.keyCode === ENTER_BUTTON_KEYCODE) {
-
             search()
         }
     }
 
     const search = () => {
-        if (searchedCategory != category.selectedCategory) {
+
+        if (searchedCategory === "") {
+            navigate(HOME_PAGE_URL); 
+            dispatch(setCategoryAction(searchedCategory))
+        } else if (searchedCategory != category.selectedCategory) {
             dispatch(setCategoryAction(searchedCategory))
             navigate(SEARCH_PAGE_URL)
-        }
+        } 
     };
 
     return (

@@ -1,26 +1,30 @@
 import React, { useState, useEffect, ChangeEvent } from "react";
 import { useCategoryElements } from "../hooks/useCategoryElements";
-import { Element } from '../components/Element';
 import '../styles/mainPage.css';
 import { useSelector } from "react-redux";
 import { Navigation } from '../components/Navigation';
 import { AppState } from "../models/model";
 import { PhotoList } from "../components/PhotoList";
+import { IElement } from "../models/IElement";
+import { HOME_PAGE_URL } from "../constants/app";
+import { useNavigate } from 'react-router-dom';
 
 
 export function CategoryPage() {
     const { totalResults, elements, error, loading, fetchCategoryElements } = useCategoryElements();
     const [nextPage, setNextPage] = useState(1);
-    const [pageElements, setPageElements] = useState(elements);
+    const [pageElements, setPageElements] = useState<IElement[]>([]);
     const [hasMore, setHasMore] = useState(true);
     const [orientation, setOrientation] = useState("");
     const [size, setSize] = useState("");
     const category = useSelector((state: AppState) => state.category);
+    const navigate = useNavigate();
 
 
     useEffect(() => {
         setPageElements([])
-        fetchCategoryElements(nextPage, category.selectedCategory, orientation, size)
+        fetchCategoryElements(nextPage, category.selectedCategory, orientation, size);
+        console.log(category.selectedCategory);
     }, [category.selectedCategory])
 
     useEffect(() => {
@@ -30,9 +34,8 @@ export function CategoryPage() {
     }, [elements])
 
     const handleLoadMore = () => {
-        fetchCategoryElements( nextPage);
-        console.log(nextPage)
-      };
+        fetchCategoryElements(nextPage, category.selectedCategory, orientation, size);
+    };
 
     const formatNumber = (num: number): string => {
         if (num >= 1000) {
@@ -58,8 +61,6 @@ export function CategoryPage() {
         console.log(event.target.value);
     };
 
-
-
     return (
         <>
             <Navigation />
@@ -67,12 +68,20 @@ export function CategoryPage() {
                 <div className="container">
                     {loading && <p>Loading...</p>}
                     {error && <p>{error}</p>}
+                    {totalResults == 0 ? 
+                    <>
+                        <div className="category-page-title" >We couldn’t find anything for "{category.selectedCategory}".
+                        Try to refine your search.</div>
+                        <button className="back-to-home-page" onClick={()=>{navigate(HOME_PAGE_URL)}}>Go to the main page</button>
+                    </>
+                    :
+                    <>
                     <div className="category-page-title">{category.selectedCategory} Photos</div>
                     <div className="category-result">
                         <div className="search-results">Photos <span className="number">{formatNumber(Number(totalResults))} </span> </div>
                         <div className="filters">
                             <select className="filter" value={orientation} onChange={optionOrientationHandler}>
-                                <option value="" selected>All Orientations</option>
+                                <option value="" >All Orientations</option>
                                 <option value="landscape">Horizontal</option>
                                 <option value="portrait">Vertical</option>
                                 <option value="square">Square</option>
@@ -90,6 +99,8 @@ export function CategoryPage() {
                         handleLoadMore={handleLoadMore}
                         hasMore={hasMore}
                     />
+                    </>
+                    }
                 </div>
             </div>
         </>

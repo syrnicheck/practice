@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import axios, { AxiosError } from 'axios';
-import { elements } from '../data/elements';
 import { IElement } from '../models/IElement';
 import { IPageResponseData } from '../models/IPageResposeData';
 import { DEFAULT_PAGE_SIZE, DEFAULT_PAGE_NUMBER, API_KEY } from '../constants/app';
-
 
 export function useCategoryElements() {
     const [elements, setElements] = useState<IElement[]>([]);
@@ -15,7 +13,7 @@ export function useCategoryElements() {
     async function fetchCategoryElements(pageNumber?: number,category?: string,  orientation?: string,
          size?: string, pageSize?: number ) {
         try {
-            const query = category || "house"
+            const query = category ;
             const page = pageNumber || DEFAULT_PAGE_NUMBER;
             const perPage = pageSize || DEFAULT_PAGE_SIZE;
 

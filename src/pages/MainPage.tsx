@@ -1,7 +1,4 @@
-// Файл MainPage.tsx
-
 import React, { useEffect, useState } from 'react';
-import { Element } from '../components/Element';
 import { useElements } from '../hooks/useElements';
 import '../styles/mainPage.css';
 import { MainNavigation } from '../components/MainNavigation';
@@ -11,7 +8,7 @@ import { IElement } from '../models/IElement';
 export function MainPage() {
   const { elements, error, fetchElements } = useElements();
   const [nextPage, setNextPage] = useState(1);
-  const [pageElements, setPageElements] = useState<IElement[]>(elements);
+  const [pageElements, setPageElements] = useState<IElement[]>([]);
   const [hasMore, setHasMore] = useState(true);
 
   useEffect(() => {

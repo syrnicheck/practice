@@ -14,14 +14,8 @@
 }
 
 .photo-list {
-    /* display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    
-    grid-gap: 30px 30px;
-    grid-auto-rows: auto; */
     display: flex;
     flex-direction: row;
-
     margin-top: 30px;
     margin-bottom: 30px;
 
@@ -88,4 +82,26 @@
 .number {
     color: #7f7f7f;
     margin: 0 0 0 8px;
+}
+
+.back-to-home-page {
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    border: 1px solid #000;
+    border-radius: 5px;
+    padding: 20px 20px;
+    background-color: #000;
+    transition: background-color .1s,border ease-in-out,transform .1s,box-shadow 5ms,border-color .25s;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 1;
+}
+
+
+.back-to-home-page:hover {
+    color: #000;
+    background-color: #fff ;
 }
