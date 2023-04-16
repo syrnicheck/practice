@@ -1,19 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import axios, { AxiosError } from 'axios';
 import { IElement } from '../models/IElement';
-import { IPageResponseData } from '../models/IPageResposeData';
+import { IPageResponseData } from '../models/IPageResponseData';
 import { DEFAULT_PAGE_SIZE, DEFAULT_PAGE_NUMBER, API_KEY } from '../constants/app';
 
 export function useCategoryElements() {
     const [elements, setElements] = useState<IElement[]>([]);
-    const [totalResults, setTotalResults] = useState<number>( )
+    const [totalResults, setTotalResults] = useState<number>()
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState('')
 
-    async function fetchCategoryElements(pageNumber?: number,category?: string,  orientation?: string,
-         size?: string, pageSize?: number ) {
+    async function fetchCategoryElements(pageNumber?: number, category?: string, orientation?: string,
+        size?: string, pageSize?: number) {
         try {
-            const query = category ;
+            const query = category;
             const page = pageNumber || DEFAULT_PAGE_NUMBER;
             const perPage = pageSize || DEFAULT_PAGE_SIZE;
 
@@ -23,7 +23,7 @@ export function useCategoryElements() {
             setLoading(true);
             const response = await axios.get<IPageResponseData>(url, {
                 headers: {
-                    'Authorization':  API_KEY
+                    'Authorization': API_KEY
                 }
             });
             console.log(response);
@@ -38,5 +38,5 @@ export function useCategoryElements() {
         }
     }
 
-    return {totalResults,  elements, error, loading, fetchCategoryElements }
+    return { totalResults, elements, error, loading, fetchCategoryElements }
 }
