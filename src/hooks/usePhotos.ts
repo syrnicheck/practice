@@ -1,9 +1,9 @@
 import  {  useState } from 'react';
-import axios, { AxiosError } from 'axios';
+import  { AxiosError } from 'axios';
 import { IPhoto } from '../models/IPhoto';
 import { IPageResponseData } from '../models/IPageResponseData';
-import { DEFAULT_PAGE_SIZE, DEFAULT_PAGE_NUMBER, API_KEY } from '../constants/app';
-
+import { DEFAULT_PAGE_SIZE, DEFAULT_PAGE_NUMBER } from '../constants/app';
+import { axiosInstance } from '../api/pexel';
 
 export function usePhotos() {
   const [photos, setPhotos] = useState<IPhoto[]>([]);
@@ -14,15 +14,10 @@ export function usePhotos() {
       const page = pageNumber || DEFAULT_PAGE_NUMBER;
       const perPage = pageSize || DEFAULT_PAGE_SIZE;
 
-      const url = `https://api.pexels.com/v1/curated?page=${page}&per_page=${perPage}`;
+      const url = `/curated?page=${page}&per_page=${perPage}`;
 
       setError('')
-      const response = await axios.get<IPageResponseData>(url, {
-        headers: {
-          'Authorization': API_KEY
-        }
-      });
-      console.log(response);
+      const response =await axiosInstance.get<IPageResponseData>(url);
       setPhotos(response.data.photos);
     } catch (e: unknown) {
       const error = e as AxiosError;

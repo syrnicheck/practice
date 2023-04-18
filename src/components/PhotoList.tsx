@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Photo } from './Photo';
 import InfiniteScroll from "react-infinite-scroll-component";
 import { IPhoto } from '../models/IPhoto';
@@ -10,9 +10,9 @@ interface PhotoListProps {
 }
 
 export const PhotoList: React.FC<PhotoListProps> = ({ pagePhotos, handleLoadMore, hasMore }) => {
-  const columnFirst = pagePhotos.filter((e, i) => i % 3 === 0);
-  const columnSecond = pagePhotos.filter((e, i) => i % 3 === 1);
-  const columnThird = pagePhotos.filter((e, i) => i % 3 === 2);
+  const columnFirst = useMemo(() => pagePhotos.filter((e, i) => i % 3 === 0), [pagePhotos]);
+  const columnSecond = useMemo(() => pagePhotos.filter((e, i) => i % 3 === 1), [pagePhotos]);
+  const columnThird = useMemo(() => pagePhotos.filter((e, i) => i % 3 === 2), [pagePhotos]);
 
   return (
     <InfiniteScroll

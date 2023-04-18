@@ -1,8 +1,7 @@
 import  {  useState } from 'react';
-import axios, { AxiosError } from 'axios';
+import  { AxiosError } from 'axios';
 import { IPhoto } from '../models/IPhoto';
-import {  API_KEY } from '../constants/app';
-
+import { axiosInstance } from '../api/pexel';
 
 export function usePhotoById() {
   const [photo, setPhoto] = useState<IPhoto>();
@@ -12,16 +11,11 @@ export function usePhotoById() {
   async function fetchPhotoById(id: number) {
     try {
      
-      const url = `https://api.pexels.com/v1/photos/${id}`;
+      const url = `/photos/${id}`;
 
       setError('')
       setLoading(true);
-      const response = await axios.get<IPhoto>(url, {
-        headers: {
-          'Authorization': API_KEY
-        }
-      });
-      console.log(response);
+      const response =await axiosInstance.get<IPhoto>(url);
       setPhoto(response.data);
       setLoading(false)
     } catch (e: unknown) {
