@@ -24,17 +24,17 @@ export function CategoryPage() {
     useEffect(() => {
         setPagePhotos([])
         fetchCategoryPhotos(nextPage, category.selectedCategory, orientation, size);
-        console.log(category.selectedCategory);
     }, [category.selectedCategory])
 
     useEffect(() => {
-        setNextPage(nextPage + 1);
-        setPagePhotos([...pagePhotos, ...photos]);
+        setPagePhotos([...pagePhotos, ...photos]);     
         setHasMore(photos.length > 0);
     }, [photos])
 
     const handleLoadMore = () => {
-        fetchCategoryPhotos(nextPage, category.selectedCategory, orientation, size);
+        setNextPage(nextPage + 1);
+        fetchCategoryPhotos(nextPage + 1, category.selectedCategory, orientation, size);
+        
     };
 
     const formatNumber = (num: number): string => {
@@ -50,15 +50,12 @@ export function CategoryPage() {
         setOrientation(event.target.value);
         fetchCategoryPhotos(nextPage, category.selectedCategory, event.target.value, size);
         setPagePhotos([]);
-        console.log(event.target.value);
     };
 
     const optionSizeHandler = (event: ChangeEvent<HTMLSelectElement>) => {
         setSize(event.target.value);
         fetchCategoryPhotos(nextPage, category.selectedCategory,  orientation, event.target.value);
         setPagePhotos([]);
-        console.log(fetchCategoryPhotos)
-        console.log(event.target.value);
     };
 
     return (
@@ -68,7 +65,7 @@ export function CategoryPage() {
                 <div className="container">
                     {loading && <p>Loading...</p>}
                     {error && <p>{error}</p>}
-                    {totalResults == 0 ? 
+                    {totalResults === 0 ? 
                     <>
                         <div className="category-page-title" >We couldn’t find anything for "{category.selectedCategory}".
                         Try to refine your search.</div>

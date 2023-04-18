@@ -18,12 +18,13 @@ export function MainPage() {
   useEffect(() => {
     console.log("fetch")
     setPagePhotos(prevPagephotos => [...prevPagephotos, ...photos]);
-    setNextPage(nextPage + 1);
+
     setHasMore(photos.length > 0);
   }, [photos])
 
   const handleLoadMore = () => {
-    fetchPhotos(nextPage);
+    setNextPage(nextPage + 1);
+    fetchPhotos(nextPage + 1);
     console.log(nextPage)
   };
 
