@@ -20,14 +20,14 @@ export function CategoryPage() {
     const category = useSelector((state: AppState) => state.category);
     const navigate = useNavigate();
 
-
     useEffect(() => {
+        setNextPage(1);
         setPagePhotos([])
         fetchCategoryPhotos(nextPage, category.selectedCategory, orientation, size);
     }, [category.selectedCategory])
 
     useEffect(() => {
-        setPagePhotos([...pagePhotos, ...photos]);     
+        setPagePhotos(prevPagephotos => [...prevPagephotos, ...photos]);     
         setHasMore(photos.length > 0);
     }, [photos])
 
