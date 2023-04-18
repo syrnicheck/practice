@@ -1,35 +1,35 @@
 import React from 'react';
-import { Element } from '../components/Element';
+import { Photo } from './Photo';
 import InfiniteScroll from "react-infinite-scroll-component";
-import { IElement } from '../models/IElement';
+import { IPhoto } from '../models/IPhoto';
 
 interface PhotoListProps {
-  pageElements: IElement[];
+  pagePhotos: IPhoto[];
   handleLoadMore: () => void;
   hasMore: boolean;
 }
 
-export const PhotoList: React.FC<PhotoListProps> = ({ pageElements, handleLoadMore, hasMore }) => {
-  const columnFirst = pageElements.filter((e, i) => i % 3 === 0);
-  const columnSecond = pageElements.filter((e, i) => i % 3 === 1);
-  const columnThird = pageElements.filter((e, i) => i % 3 === 2);
+export const PhotoList: React.FC<PhotoListProps> = ({ pagePhotos, handleLoadMore, hasMore }) => {
+  const columnFirst = pagePhotos.filter((e, i) => i % 3 === 0);
+  const columnSecond = pagePhotos.filter((e, i) => i % 3 === 1);
+  const columnThird = pagePhotos.filter((e, i) => i % 3 === 2);
 
   return (
     <InfiniteScroll
-      dataLength={pageElements.length}
+      dataLength={pagePhotos.length}
       next={handleLoadMore}
       hasMore={hasMore}
       loader={<h4>Загрузка...</h4>}
     >
       <div className="photo-list">
         <div className="column">
-          {columnFirst.map(element => <Element element={element} key={element.id} />)}
+          {columnFirst.map(photo => <Photo photo={photo} key={photo.id} />)}
         </div>
         <div className="column">
-          {columnSecond.map(element => <Element element={element} key={element.id} />)}
+          {columnSecond.map(photo => <Photo photo={photo} key={photo.id} />)}
         </div>
         <div className="column">
-          {columnThird.map(element => <Element element={element} key={element.id} />)}
+          {columnThird.map(photo => <Photo photo={photo} key={photo.id} />)}
         </div>
       </div>
     </InfiniteScroll>

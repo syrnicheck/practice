@@ -1,13 +1,22 @@
 export const categoryReducer = (state: any = { selectedCategory: null }, action: any) => {
-    switch (action.type) {
+  switch (action.type) {
       case 'SET_CATEGORY':
-        // Сохраняем значение в localStorage перед обновлением состояния
-        localStorage.setItem('selectedCategory', JSON.stringify(action.payload));
-        return { ...state, selectedCategory: action.payload };
+          try {
+              localStorage.setItem('selectedCategory', JSON.stringify(action.payload));
+          } catch (error) {
+              console.error('Ошибка при работе с localStorage:', error);
+          }
+          return { ...state, selectedCategory: action.payload };
       default:
-        return state;
-    }
-  };
+          return state;
+  }
+};
 
-
-  export const setCategoryAction = (payload: any) => ({ type: 'SET_CATEGORY', payload })
+export const setCategoryAction = (payload: any) => {
+  try {
+      return { type: 'SET_CATEGORY', payload: JSON.parse(payload) };
+  } catch (error) {
+      console.error('Ошибка при разборе JSON:', error);
+      return { type: 'SET_CATEGORY', payload };
+  }
+};

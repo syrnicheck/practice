@@ -3,9 +3,18 @@ import { categoryReducer } from './reducers/categoryReducer';
 
 const initialState = {
   category: {
-    selectedCategory: JSON.parse(localStorage.getItem('selectedCategory') || 'null')
+    selectedCategory: null
   }
 };
+
+try {
+  const storedCategory = localStorage.getItem('selectedCategory');
+  if (storedCategory) {
+    initialState.category.selectedCategory = JSON.parse(storedCategory);
+  }
+} catch (error) {
+  console.error('Ошибка при работе с localStorage:', error);
+}
 
 const store = configureStore({
   reducer: {

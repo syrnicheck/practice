@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import '../styles/header.css';
 import { SEARCH_PAGE_URL } from "../constants/app";
 import { Input } from './Input';
-import { useElementById } from "../hooks/useElementById.ts";
+import { usePhotoById } from "../hooks/usePhotoById.ts";
 import { MAIN_PAGE_BACKGROUND_IDS, SUGGESTED_CATEGORIES } from "../constants/app";
 import { Navigation } from "./Navigation";
 import { useDispatch } from "react-redux";
@@ -12,7 +12,7 @@ import logo from "../assets/logo.svg";
 
 
 export function MainNavigation() {
-    const { element, error, loading, fetchElementById } = useElementById();
+    const { photo, error, loading, fetchPhotoById } = usePhotoById();
     const [isMainNavVisible, setIsMainNavVisible] = useState(true);
     const [randomCategories, setRandomCategories] = useState<string[]>([])
 
@@ -23,7 +23,7 @@ export function MainNavigation() {
 
     useEffect(() => {
         const randomId = MAIN_PAGE_BACKGROUND_IDS[Math.floor(Math.random() * MAIN_PAGE_BACKGROUND_IDS.length)]
-        fetchElementById(randomId)
+        fetchPhotoById(randomId)
 
         const categories: string[] = [];
         while (categories.length < 7) {
@@ -50,12 +50,12 @@ export function MainNavigation() {
 
     useEffect(() => {
         const handleScroll = () => {
-            const element = document.getElementById('main-navigation');
-            if (!element) {
+            const photo = document.getElementById('main-navigation');
+            if (!photo) {
 
                 return;
             }
-            const rect = element.getBoundingClientRect();
+            const rect = photo.getBoundingClientRect();
             const visible = rect.top > -500;
 
             setIsMainNavVisible(visible);
@@ -70,7 +70,7 @@ export function MainNavigation() {
     return (
         <>
             <Navigation isVisible={!isMainNavVisible} />
-            <div className="main-navigation" id="main-navigation" style={{ backgroundImage: ` url(${element?.src.landscape})` }}>
+            <div className="main-navigation" id="main-navigation" style={{ backgroundImage: ` url(${photo?.src.landscape})` }}>
                 <div className="container">
                     <div className="main-page-header">
                         <div className="header-inner">
@@ -100,7 +100,7 @@ export function MainNavigation() {
                         </div>
                     </div>
                     <div className="main-page-photographer">
-                        <a href={element?.photographer_url} target="_blank">Photo by {element?.photographer}</a>
+                        <a href={photo?.photographer_url} target="_blank">Photo by {photo?.photographer}</a>
                     </div>
                 </div>
             </div>

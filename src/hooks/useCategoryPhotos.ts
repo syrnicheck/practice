@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import axios, { AxiosError } from 'axios';
-import { IElement } from '../models/IElement';
+import { IPhoto } from '../models/IPhoto';
 import { IPageResponseData } from '../models/IPageResponseData';
 import { DEFAULT_PAGE_SIZE, DEFAULT_PAGE_NUMBER, API_KEY } from '../constants/app';
 
-export function useCategoryElements() {
-    const [elements, setElements] = useState<IElement[]>([]);
+export function useCategoryPhotos() {
+    const [photos, setPhotos] = useState<IPhoto[]>([]);
     const [totalResults, setTotalResults] = useState<number>()
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState('')
 
-    async function fetchCategoryElements(pageNumber?: number, category?: string, orientation?: string,
+    async function fetchCategoryPhotos(pageNumber?: number, category?: string, orientation?: string,
         size?: string, pageSize?: number) {
         try {
             const query = category;
@@ -27,7 +27,7 @@ export function useCategoryElements() {
                 }
             });
             console.log(response);
-            setElements(response.data.photos);
+            setPhotos(response.data.photos);
             setTotalResults(response.data.total_results)
             setLoading(false)
         } catch (e: unknown) {
@@ -38,5 +38,5 @@ export function useCategoryElements() {
         }
     }
 
-    return { totalResults, elements, error, loading, fetchCategoryElements }
+    return { totalResults, photos, error, loading, fetchCategoryPhotos }
 }

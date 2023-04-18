@@ -1,29 +1,29 @@
 import React, { useEffect, useState } from 'react';
-import { useElements } from '../hooks/useElements';
+import { usePhotos } from '../hooks/usePhotos';
 import '../styles/mainPage.css';
 import { MainNavigation } from '../components/MainNavigation';
 import { PhotoList } from '../components/PhotoList';
-import { IElement } from '../models/IElement';
+import { IPhoto } from '../models/IPhoto';
 
 export function MainPage() {
-  const { elements, error, fetchElements } = useElements();
+  const { photos, error, fetchPhotos } = usePhotos();
   const [nextPage, setNextPage] = useState(1);
-  const [pageElements, setPageElements] = useState<IElement[]>([]);
+  const [pagePhotos, setPagePhotos] = useState<IPhoto[]>([]);
   const [hasMore, setHasMore] = useState(true);
 
   useEffect(() => {
-    fetchElements();
+    fetchPhotos();
   }, []);
 
   useEffect(() => {
     console.log("fetch")
-    setPageElements(prevPageElements => [...prevPageElements, ...elements]);
+    setPagePhotos(prevPagephotos => [...prevPagephotos, ...photos]);
     setNextPage(nextPage + 1);
-    setHasMore(elements.length > 0);
-  }, [elements])
+    setHasMore(photos.length > 0);
+  }, [photos])
 
   const handleLoadMore = () => {
-    fetchElements(nextPage);
+    fetchPhotos(nextPage);
     console.log(nextPage)
   };
 
@@ -35,7 +35,7 @@ export function MainPage() {
         {error && <p>{error}</p>}
         <h2 className="main-page-title">Free Stock Photos</h2>
         <PhotoList
-          pageElements={pageElements}
+          pagePhotos={pagePhotos}
           handleLoadMore={handleLoadMore}
           hasMore={hasMore}
         />

@@ -1,15 +1,15 @@
 import  {  useState } from 'react';
 import axios, { AxiosError } from 'axios';
-import { IElement } from '../models/IElement';
+import { IPhoto } from '../models/IPhoto';
 import { IPageResponseData } from '../models/IPageResponseData';
 import { DEFAULT_PAGE_SIZE, DEFAULT_PAGE_NUMBER, API_KEY } from '../constants/app';
 
 
-export function useElements() {
-  const [elements, setElements] = useState<IElement[]>([]);
+export function usePhotos() {
+  const [photos, setPhotos] = useState<IPhoto[]>([]);
   const [error, setError] = useState('')
 
-  async function fetchElements(pageNumber?: number, pageSize?: number) {
+  async function fetchPhotos(pageNumber?: number, pageSize?: number) {
     try {
       const page = pageNumber || DEFAULT_PAGE_NUMBER;
       const perPage = pageSize || DEFAULT_PAGE_SIZE;
@@ -23,12 +23,12 @@ export function useElements() {
         }
       });
       console.log(response);
-      setElements(response.data.photos);
+      setPhotos(response.data.photos);
     } catch (e: unknown) {
       const error = e as AxiosError;
       setError(error.message);
     }
   }
 
-  return { elements,  error, fetchElements }
+  return { photos,  error, fetchPhotos }
 }

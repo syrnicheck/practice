@@ -1,6 +1,6 @@
-import {IElement} from '../models/IElement'
+import {IPhoto} from '../models/IPhoto'
 
-export const elements: IElement[] = [
+export const photos: IPhoto[] = [
     {
         "id": 2014422,
         "width": 3024,

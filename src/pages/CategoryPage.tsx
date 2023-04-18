@@ -1,19 +1,19 @@
 import React, { useState, useEffect, ChangeEvent } from "react";
-import { useCategoryElements } from "../hooks/useCategoryElements";
+import { useCategoryPhotos } from "../hooks/useCategoryPhotos";
 import '../styles/mainPage.css';
 import { useSelector } from "react-redux";
 import { Navigation } from '../components/Navigation';
 import { AppState } from "../models/model";
 import { PhotoList } from "../components/PhotoList";
-import { IElement } from "../models/IElement";
+import { IPhoto } from "../models/IPhoto";
 import { HOME_PAGE_URL } from "../constants/app";
 import { useNavigate } from 'react-router-dom';
 
 
 export function CategoryPage() {
-    const { totalResults, elements, error, loading, fetchCategoryElements } = useCategoryElements();
+    const { totalResults, photos, error, loading, fetchCategoryPhotos } = useCategoryPhotos();
     const [nextPage, setNextPage] = useState(1);
-    const [pageElements, setPageElements] = useState<IElement[]>([]);
+    const [pagePhotos, setPagePhotos] = useState<IPhoto[]>([]);
     const [hasMore, setHasMore] = useState(true);
     const [orientation, setOrientation] = useState("");
     const [size, setSize] = useState("");
@@ -22,19 +22,19 @@ export function CategoryPage() {
 
 
     useEffect(() => {
-        setPageElements([])
-        fetchCategoryElements(nextPage, category.selectedCategory, orientation, size);
+        setPagePhotos([])
+        fetchCategoryPhotos(nextPage, category.selectedCategory, orientation, size);
         console.log(category.selectedCategory);
     }, [category.selectedCategory])
 
     useEffect(() => {
         setNextPage(nextPage + 1);
-        setPageElements([...pageElements, ...elements]);
-        setHasMore(elements.length > 0);
-    }, [elements])
+        setPagePhotos([...pagePhotos, ...photos]);
+        setHasMore(photos.length > 0);
+    }, [photos])
 
     const handleLoadMore = () => {
-        fetchCategoryElements(nextPage, category.selectedCategory, orientation, size);
+        fetchCategoryPhotos(nextPage, category.selectedCategory, orientation, size);
     };
 
     const formatNumber = (num: number): string => {
@@ -48,16 +48,16 @@ export function CategoryPage() {
 
     const optionOrientationHandler = (event: ChangeEvent<HTMLSelectElement>) => {
         setOrientation(event.target.value);
-        fetchCategoryElements(nextPage, category.selectedCategory, event.target.value, size);
-        setPageElements([]);
+        fetchCategoryPhotos(nextPage, category.selectedCategory, event.target.value, size);
+        setPagePhotos([]);
         console.log(event.target.value);
     };
 
     const optionSizeHandler = (event: ChangeEvent<HTMLSelectElement>) => {
         setSize(event.target.value);
-        fetchCategoryElements(nextPage, category.selectedCategory,  orientation, event.target.value);
-        setPageElements([]);
-        console.log(fetchCategoryElements)
+        fetchCategoryPhotos(nextPage, category.selectedCategory,  orientation, event.target.value);
+        setPagePhotos([]);
+        console.log(fetchCategoryPhotos)
         console.log(event.target.value);
     };
 
@@ -95,7 +95,7 @@ export function CategoryPage() {
                         </div>
                     </div>
                     <PhotoList
-                        pageElements={pageElements}
+                        pagePhotos={pagePhotos}
                         handleLoadMore={handleLoadMore}
                         hasMore={hasMore}
                     />

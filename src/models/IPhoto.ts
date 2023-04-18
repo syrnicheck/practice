@@ -1,4 +1,4 @@
-export interface IElement {
+export interface IPhoto {
   id: number,
   width: number,
   height: number,

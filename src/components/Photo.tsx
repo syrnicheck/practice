@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react"
-import { IElement } from "../models/IElement"
+import { IPhoto } from "../models/IPhoto"
 import "../styles/imageCard.css"
 import axios from 'axios';
 import fileDownload from 'js-file-download';
@@ -8,8 +8,8 @@ import downloadIcon from "../assets/downloadIcon.svg";
 import likeIcon from "../assets/likeIcon.svg";
 import dislikeIcon from "../assets/dislikeIcon.svg";
 
-interface ElementProps {
-    element: IElement
+interface photoProps {
+    photo: IPhoto
 }
 
 function download(url: string, filename: string) {
@@ -22,35 +22,41 @@ function download(url: string, filename: string) {
     console.log(url)
 }
 
-export function Element({ element }: ElementProps) {
+export function Photo({ photo }: photoProps) {
     const [isLiked, setIsLiked] = useState(false);
 
 
     const toggleLike = () => {
-        const like = JSON.parse((localStorage.getItem('likes')) || '');
-
-        if (like[element.id]) {
-            delete like[element.id]
-            setIsLiked(false)
-        } else {
-            like[element.id] = true;
-            setIsLiked(true);
+        try {
+            const like = JSON.parse(localStorage.getItem('likes') || '{}');
+            if (like[photo.id]) {
+                delete like[photo.id];
+                setIsLiked(false);
+            } else {
+                like[photo.id] = true;
+                setIsLiked(true);
+            }
+            localStorage.setItem('likes', JSON.stringify(like));
+        } catch (error) {
+            console.error('Ошибка при работе с localStorage:', error);
         }
-        localStorage.setItem('likes', JSON.stringify(like));
-
     };
 
     useEffect(() => {
-        const like = JSON.parse((localStorage.getItem('likes')) || '');
-        setIsLiked(like[element.id] || false);
-    }, [element.id]);
+        try {
+            const like = JSON.parse(localStorage.getItem('likes') || '{}');
+            setIsLiked(like[photo.id] || false);
+        } catch (error) {
+            console.error('Ошибка при работе с localStorage:', error);
+        }
+    }, [photo.id]);
 
-    //const img_avatar_url = "https://images.pexels.com/users/avatars/"+element.photographer_url.slice(23).replace(/\D/g,'');
+    //const img_avatar_url = "https://images.pexels.com/users/avatars/"+photo.photographer_url.slice(23).replace(/\D/g,'');
     return (
         < >
             <div className="image-card">
                 <div className="shadow">
-                    <img className="image" src={element.src.large} alt={element.alt} />
+                    <img className="image" src={photo.src.large} alt={photo.alt} />
                     <div className="image-information">
                         <div className="information-header">
                             <button className="image-button save-button" >
@@ -66,10 +72,10 @@ export function Element({ element }: ElementProps) {
                         </div>
                         <div className="information-footer">
                             <div className="photographer">
-                                <img className="avatar" src={element.src.tiny} alt={element.photographer} />
-                                <a className="name" href={element.photographer_url} target="_blank">{element.photographer}</a>
+                                <img className="avatar" src={photo.src.tiny} alt={photo.photographer} />
+                                <a className="name" href={photo.photographer_url} target="_blank">{photo.photographer}</a>
                             </div>
-                            <button className="image-button" onClick={() => download(element.src.original, element.id + ".jpeg")}>
+                            <button className="image-button" onClick={() => download(photo.src.original, photo.id + ".jpeg")}>
                                 <img src={downloadIcon} alt="download Icon" />
                             </button>
                         </div>
