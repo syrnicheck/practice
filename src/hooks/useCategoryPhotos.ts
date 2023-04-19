@@ -18,7 +18,7 @@ export function useCategoryPhotos() {
             const page = pageNumber || DEFAULT_PAGE_NUMBER;
             const perPage = pageSize || DEFAULT_PAGE_SIZE;
 
-            const url = `/search?query=${query}&page=${page}&per_page=${perPage}&orientation=${orientation}&size=${size}`;
+            const url = `/v1/search?query=${query}&page=${page}&per_page=${perPage}&orientation=${orientation}&size=${size}`;
 
             setError('')
             setLoading(true);

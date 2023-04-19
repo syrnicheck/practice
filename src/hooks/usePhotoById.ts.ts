@@ -11,7 +11,7 @@ export function usePhotoById() {
   async function fetchPhotoById(id: number) {
     try {
      
-      const url = `/photos/${id}`;
+      const url = `/v1/photos/${id}`;
 
       setError('')
       setLoading(true);

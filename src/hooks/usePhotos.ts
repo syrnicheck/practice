@@ -14,7 +14,7 @@ export function usePhotos() {
       const page = pageNumber || DEFAULT_PAGE_NUMBER;
       const perPage = pageSize || DEFAULT_PAGE_SIZE;
 
-      const url = `/curated?page=${page}&per_page=${perPage}`;
+      const url = `/v1/curated?page=${page}&per_page=${perPage}`;
 
       setError('')
       const response =await axiosInstance.get<IPageResponseData>(url);

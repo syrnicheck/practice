@@ -33,10 +33,9 @@ export function Input() {
         if (searchedCategory === "") {
             navigate(HOME_PAGE_URL);
             dispatch(setCategoryAction(searchedCategory));
-        } else if (searchedCategory != category.selectedCategory) {
-            dispatch(setCategoryAction(searchedCategory));
-            navigate(SEARCH_PAGE_URL);
         } else {
+            dispatch(setCategoryAction(searchedCategory));
+            window.location.reload();
             navigate(SEARCH_PAGE_URL);
         }
     };
