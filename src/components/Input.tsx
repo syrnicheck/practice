@@ -34,9 +34,8 @@ export function Input() {
             navigate(HOME_PAGE_URL);
             dispatch(setCategoryAction(searchedCategory));
         } else {
-            dispatch(setCategoryAction(searchedCategory));
-            window.location.reload();
             navigate(SEARCH_PAGE_URL);
+            dispatch(setCategoryAction(searchedCategory));
         }
     };
 
